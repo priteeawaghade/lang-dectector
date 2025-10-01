@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Language Detection</title>
+    <style>
+     /* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Body Styling with Gradient Background */
+body {
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+/* Main Container */
+.container {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 500px;
+}
+
+/* Heading */
+h1 {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Text Area */
+textarea {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: none;
+  resize: none;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  outline: none;
+}
+
+/* Placeholder Styling */
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Buttons */
+button {
+  background: linear-gradient(90deg, #ff416c, #ff4b2b);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 50px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0px 4px 10px rgba(255, 75, 43, 0.5);
+  margin: 5px;
+  width: 40%;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background: linear-gradient(90deg, #ff4b2b, #ff416c);
+  box-shadow: 0px 6px 15px rgba(255, 75, 43, 0.8);
+}
+
+/* Back Button */
+.back-btn {
+  background: linear-gradient(90deg, #4CAF50, #2E8B57);
+  box-shadow: 0px 4px 10px rgba(46, 139, 87, 0.5);
+}
+
+.back-btn:hover {
+  background: linear-gradient(90deg, #2E8B57, #4CAF50);
+  box-shadow: 0px 6px 15px rgba(46, 139, 87, 0.8);
+}
+
+/* Detected Language Section */
+.result {
+  margin-top: 20px;
+  font-size: 18px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .container {
+      width: 95%;
+  }
+
+  button {
+      width: 80%;
+  }
+}
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Type Text and Detect Language</h1>
+      <textarea id="inputText" placeholder="Type your text here..."></textarea>
+      <button id="detectLanguage">Detect Language</button>
+      <a href="home.html"><button class="back-btn">Back</button></a>
+      <div class="result">
+        <h2>Detected Language:</h2>
+        <p id="detectedLanguage">No language detected yet.</p>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("detectLanguage")
+        .addEventListener("click", function () {
+          const inputText = document.getElementById("inputText").value;
+
+          if (!inputText.trim()) {
+            alert("Please enter some text.");
+            return;
+          }
+
+          fetch("http://localhost:5000/detect_language", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: inputText }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.language) {
+                document.getElementById(
+                  "detectedLanguage"
+                ).textContent = ` ${data.language}`;
+              } else {
+                document.getElementById("detectedLanguage").textContent =
+                  "Language detection failed.";
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("detectedLanguage").textContent =
+                "Error detecting language.";
+            });
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Extraction and Language Detection</title>
+    <link rel="stylesheet" href="imgext.css">
+</head>
+<body>
+    <h1>Extract Text from Image</h1>
+    <div class="up-element">
+        <input type="file" id="imageInput" accept="image/*">
+        <button id="extractText">Extract Text</button>
+        <button id="detectLanguage" disabled>Detect Language</button> 
+    </div>
+    
+    <h2>Selected Image:</h2>
+    <img id="imagePreview" src="" alt="Image preview" style="max-width: 100%; height: auto; display: none;"/>
+    
+    <h2>Extracted Text:</h2>
+    <pre id="extractedText"></pre>
+
+    <h2>Detected Language:</h2>
+    <p id="detectedLanguage"></p>
+    <div id="loadingSpinner" style="display: none;">
+        <div class="spinner"></div>
+    </div>    
+
+    <a href="home.html"><button class="back-btn">Back</button></a>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.0/dist/tesseract.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
